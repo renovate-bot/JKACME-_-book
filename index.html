@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name='robots' content='max-image-preview:large'>
+  <style>
+  img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }
+  </style>
+  <title>MakeStaticSite – Generate and deploy static websites with Bash!</title>
+  <link rel="alternate" type="application/rss+xml" title="MakeStaticSite » Feed" href="feed/index.xml">
+  <link rel="alternate" type="application/rss+xml" title="MakeStaticSite » Comments Feed" href="comments/feed/index.xml">
+  <script>
+  window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.1.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.1.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/makestaticsite.sh\/wp-includes\/js\/wp-emoji-release.min.js"}};
+  /*! This file is auto-generated */
+  !function(i,n){var o,s,e;function c(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function p(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data),r=(e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0),new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data));return t.every(function(e,t){return e===r[t]})}function u(e,t,n){switch(t){case"flag":return n(e,"\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f","\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f")?!1:!n(e,"\ud83c\uddfa\ud83c\uddf3","\ud83c\uddfa\u200b\ud83c\uddf3")&&!n(e,"\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f","\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");case"emoji":return!n(e,"\ud83d\udc26\u200d\ud83d\udd25","\ud83d\udc26\u200b\ud83d\udd25")}return!1}function f(e,t,n){var r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):i.createElement("canvas"),a=r.getContext("2d",{willReadFrequently:!0}),o=(a.textBaseline="top",a.font="600 32px Arial",{});return e.forEach(function(e){o[e]=t(a,e,n)}),o}function t(e){var t=i.createElement("script");t.src=e,t.defer=!0,i.head.appendChild(t)}"undefined"!=typeof Promise&&(o="wpEmojiSettingsSupports",s=["flag","emoji"],n.supports={everything:!0,everythingExceptFlag:!0},e=new Promise(function(e){i.addEventListener("DOMContentLoaded",e,{once:!0})}),new Promise(function(t){var n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(s),u.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"}),a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=function(e){c(n=e.data),a.terminate(),t(n)})}catch(e){}c(n=f(s,u,p))}t(n)}).then(function(e){for(var t in e)n.supports[t]=e[t],n.supports.everything=n.supports.everything&&n.supports[t],"flag"!==t&&(n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&n.supports[t]);n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&!n.supports.flag,n.DOMReady=!1,n.readyCallback=function(){n.DOMReady=!0}}).then(function(){return e}).then(function(){var e;n.supports.everything||(n.readyCallback(),(e=n.source||{}).concatemoji?t(e.concatemoji):e.wpemoji&&e.twemoji&&(t(e.twemoji),t(e.wpemoji)))}))}((window,document),window._wpemojiSettings);
+  </script>
+  <style id='wp-block-site-logo-inline-css'>
+  .wp-block-site-logo{box-sizing:border-box;line-height:0}.wp-block-site-logo a{display:inline-block;line-height:0}.wp-block-site-logo.is-default-size img{height:auto;width:120px}.wp-block-site-logo img{height:auto;max-width:100%}.wp-block-site-logo a,.wp-block-site-logo img{border-radius:inherit}.wp-block-site-logo.aligncenter{margin-left:auto;margin-right:auto;text-align:center}:root :where(.wp-block-site-logo.is-style-rounded){border-radius:9999px}
+  </style>
+  <style id='wp-block-site-title-inline-css'>
+  .wp-block-site-title{box-sizing:border-box}.wp-block-site-title :where(a){color:inherit;font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;letter-spacing:inherit;line-height:inherit;text-decoration:inherit}
+  </style>
+  <style id='wp-block-group-inline-css'>
+  .wp-block-group{box-sizing:border-box}:where(.wp-block-group.wp-block-group-is-layout-constrained){position:relative}
+  </style>
+  <style id='wp-block-group-theme-inline-css'>
+  :where(.wp-block-group.has-background){padding:1.25em 2.375em}
+  </style>
+  <style id='wp-block-navigation-link-inline-css'>
+  .wp-block-navigation .wp-block-navigation-item__label{overflow-wrap:break-word}.wp-block-navigation .wp-block-navigation-item__description{display:none}.link-ui-tools{border-top:1px solid #f0f0f0;padding:8px}.link-ui-block-inserter{padding-top:8px}.link-ui-block-inserter__back{margin-left:8px;text-transform:uppercase}
+  </style>
+  <style id='wp-block-search-inline-css'>
+  .wp-block-search__button{margin-left:10px;word-break:normal}.wp-block-search__button.has-icon{line-height:0}.wp-block-search__button svg{height:1.25em;min-height:24px;min-width:24px;width:1.25em;fill:currentColor;vertical-align:text-bottom}:where(.wp-block-search__button){border:1px solid #ccc;padding:6px 10px}.wp-block-search__inside-wrapper{display:flex;flex:auto;flex-wrap:nowrap;max-width:100%}.wp-block-search__label{width:100%}.wp-block-search__input{appearance:none;border:1px solid #949494;flex-grow:1;margin-left:0;margin-right:0;min-width:3rem;padding:8px;text-decoration:unset!important}.wp-block-search.wp-block-search__button-only .wp-block-search__button{box-sizing:border-box;display:flex;flex-shrink:0;justify-content:center;margin-left:0;max-width:100%}.wp-block-search.wp-block-search__button-only .wp-block-search__inside-wrapper{min-width:0!important;transition-property:width}.wp-block-search.wp-block-search__button-only .wp-block-search__input{flex-basis:100%;transition-duration:.3s}.wp-block-search.wp-block-search__button-only.wp-block-search__searchfield-hidden,.wp-block-search.wp-block-search__button-only.wp-block-search__searchfield-hidden .wp-block-search__inside-wrapper{overflow:hidden}.wp-block-search.wp-block-search__button-only.wp-block-search__searchfield-hidden .wp-block-search__input{border-left-width:0!important;border-right-width:0!important;flex-basis:0;flex-grow:0;margin:0;min-width:0!important;padding-left:0!important;padding-right:0!important;width:0!important}:where(.wp-block-search__input){font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;letter-spacing:inherit;line-height:inherit;text-transform:inherit}:where(.wp-block-search__button-inside .wp-block-search__inside-wrapper){border:1px solid #949494;box-sizing:border-box;padding:4px}:where(.wp-block-search__button-inside .wp-block-search__inside-wrapper) .wp-block-search__input{border:none;border-radius:0;padding:0 4px}:where(.wp-block-search__button-inside .wp-block-search__inside-wrapper) .wp-block-search__input:focus{outline:none}:where(.wp-block-search__button-inside .wp-block-search__inside-wrapper) :where(.wp-block-search__button){padding:4px 8px}.wp-block-search.aligncenter .wp-block-search__inside-wrapper{margin:auto}.wp-block[data-align=right] .wp-block-search.wp-block-search__button-only .wp-block-search__inside-wrapper{float:right}
+  </style>
+  <style id='wp-block-search-theme-inline-css'>
+  .wp-block-search .wp-block-search__label{font-weight:700}.wp-block-search__button{border:1px solid #ccc;padding:.375em .625em}
+  </style>
+  <style id='tw-block-search-inline-css'>
+  .wp-block-search:not(.wp-block-search__button-inside).is-style-tw-underline .wp-block-search__input{border:none;border-bottom:1px solid var(--tw-block-border-color);border-top:1px solid transparent!important}.wp-block-search.wp-block-search__button-inside.is-style-tw-underline .wp-block-search__inside-wrapper{border:none;border-bottom:1px solid var(--tw-block-border-color);padding:0}.wp-block-search.is-style-tw-underline .wp-block-search__input{background:transparent;color:currentcolor;padding-inline-start:0;border-radius:0}.wp-block-search.is-style-tw-underline .wp-block-search__input:focus{outline:none}.wp-block-search__button-inside.is-style-tw-underline.wp-block-search__icon-button .wp-block-search__button:not(.has-background){padding:0;background:transparent;color:currentcolor;border:0}
+  </style>
+  <link rel='stylesheet' id='wp-block-navigation-css' href='wp-includes/blocks/navigation/style.min.css' media='all'>
+  <link rel='stylesheet' id='tw-block-navigation-css' href='wp-content/plugins/twentig/dist/blocks/navigation/style.css'
+  media='all'>
+  <style id='wp-block-template-part-theme-inline-css'>
+  :root :where(.wp-block-template-part.has-background){margin-bottom:0;margin-top:0;padding:1.25em 2.375em}
+  </style>
+  <style id='wp-block-post-title-inline-css'>
+  .wp-block-post-title{box-sizing:border-box;word-break:break-word}.wp-block-post-title :where(a){display:inline-block;font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;letter-spacing:inherit;line-height:inherit;text-decoration:inherit}
+  </style>
+  <style id='wp-block-post-featured-image-inline-css'>
+  .wp-block-post-featured-image{margin-left:0;margin-right:0}.wp-block-post-featured-image a{display:block;height:100%}.wp-block-post-featured-image :where(img){box-sizing:border-box;height:auto;max-width:100%;vertical-align:bottom;width:100%}.wp-block-post-featured-image.alignfull img,.wp-block-post-featured-image.alignwide img{width:100%}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim{background-color:#000;inset:0;position:absolute}.wp-block-post-featured-image{position:relative}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-gradient{background-color:initial}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-0{opacity:0}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-10{opacity:.1}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-20{opacity:.2}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-30{opacity:.3}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-40{opacity:.4}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-50{opacity:.5}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-60{opacity:.6}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-70{opacity:.7}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-80{opacity:.8}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-90{opacity:.9}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-100{opacity:1}.wp-block-post-featured-image:where(.alignleft,.alignright){width:100%}
+  </style>
+  <style id='tw-block-post-featured-image-inline-css'>
+  .wp-block-post-featured-image[class*="tw-img-ratio"] img{aspect-ratio:var(--tw-img-ratio);object-fit:cover}.wp-block-post-featured-image.is-style-tw-rounded-corners :where(img,span){border-radius:var(--tw-block-rounded)}.wp-block-post-featured-image.is-style-rounded :where(img,span){border-radius:9999px}.wp-block-post-featured-image.is-style-tw-frame span{margin:12px}.wp-block-post-featured-image.is-style-tw-border img{border:1px solid var(--tw-block-border-color)}.wp-block-post-featured-image.is-style-tw-shadow img{box-shadow:var(--tw-block-shadow)}.wp-block-post-featured-image.is-style-tw-hard-shadow img{box-shadow:var(--tw-block-hard-shadow)}.wp-block-post-featured-image[style*="--shape"] :where(img,span),.wp-block-post-featured-image[style*="--shape"].tw-hover-zoom{-webkit-clip-path:var(--shape);clip-path:var(--shape)}.wp-block-post-featured-image.tw-hover-fade :where(img,span){transition:opacity 0.2s}.tw-stretched-link:hover .wp-block-post-featured-image.tw-hover-fade img,.wp-block-post-featured-image.tw-hover-fade:where(:hover,:focus-within) img{opacity:0.9}.wp-block-post-featured-image.tw-hover-zoom{overflow:hidden}.wp-block-post-featured-image.tw-hover-zoom img{transition:transform 0.4s}.tw-stretched-link:hover .wp-block-post-featured-image.tw-hover-zoom img,.wp-block-post-featured-image.tw-hover-zoom:where(:hover,:focus-within) img{transform:scale(1.05)}.wp-block-post-featured-image[style*="--shape"].tw-hover-zoom img{-webkit-clip-path:none;clip-path:none}.wp-block-post-featured-image.tw-hover-overlay span{transition:opacity 0.2s}.tw-stretched-link:not(:hover):not(:focus-within) > .wp-block-post-featured-image.tw-hover-overlay span,:not(.tw-stretched-link) > .wp-block-post-featured-image.tw-hover-overlay:not(:hover):not(:focus-within) span{opacity:0}.wp-block-post-featured-image.tw-hover-radius :where(img,span){transition:border-radius 0.2s}.tw-stretched-link:hover .wp-block-post-featured-image.tw-hover-radius :where(img,span),.wp-block-post-featured-image.tw-hover-radius:where(:hover,:focus-within) :where(img,span){border-radius:40px!important}:where(.wp-block-post-featured-image) .wp-element-caption{margin-top:0.5em}.wp-block-post-featured-image .wp-element-caption a{display:unset}
+  </style>
+  <style id='wp-block-separator-inline-css'>
+  @charset "UTF-8";.wp-block-separator{border:none;border-top:2px solid}:root :where(.wp-block-separator.is-style-dots){height:auto;line-height:1;text-align:center}:root :where(.wp-block-separator.is-style-dots):before{color:currentColor;content:"···";font-family:serif;font-size:1.5em;letter-spacing:2em;padding-left:2em}.wp-block-separator.is-style-dots{background:none!important;border:none!important}
+  </style>
+  <style id='wp-block-separator-theme-inline-css'>
+  .wp-block-separator.has-css-opacity{opacity:.4}.wp-block-separator{border:none;border-bottom:2px solid;margin-left:auto;margin-right:auto}.wp-block-separator.has-alpha-channel-opacity{opacity:1}.wp-block-separator:not(.is-style-wide):not(.is-style-dots){width:100px}.wp-block-separator.has-background:not(.is-style-dots){border-bottom:none;height:1px}.wp-block-separator.has-background:not(.is-style-wide):not(.is-style-dots){height:2px}
+  </style>
+  <style id='tw-block-separator-inline-css'>
+  .wp-block-separator{background:currentcolor}.wp-block-separator.is-style-dots{height:auto}.wp-block-separator.is-style-tw-asterisks{background:none!important;text-align:center;line-height:1;border:none!important;height:auto!important}.wp-block-separator.is-style-tw-asterisks::before{content:"* * *";font-size:1.125em}.wp-block-separator.wp-block-separator.is-style-tw-dotted{width:100%;height:1px;border:0;background:linear-gradient(90deg,currentcolor 1px,transparent 0)!important;background-size:4px 1px!important}.wp-block-separator.wp-block-separator.is-style-tw-dashed{width:100%;height:1px;border:0;background:linear-gradient(90deg,currentcolor 4px,transparent 0)!important;background-size:8px 1px!important}.wp-block-separator.wp-block-separator.has-background:is(.is-style-tw-dashed, .is-style-tw-dotted){height:1px}.wp-block-separator.is-style-tw-dotted.is-vertical{background:linear-gradient(0deg,currentcolor 1px,transparent 0)!important;background-size:1px 4px!important}.wp-block-separator.is-style-tw-dashed.is-vertical{background:linear-gradient(0deg,currentcolor 4px,transparent 0)!important;background-size:1px 8px!important}hr.tw-ml-0{text-align:left!important}hr.tw-mr-0{text-align:right!important}
+  </style>
+  <style id='wp-block-spacer-inline-css'>
+  .wp-block-spacer{clear:both}
+  </style>
+  <style id='wp-block-paragraph-inline-css'>
+  .is-small-text{font-size:.875em}.is-regular-text{font-size:1em}.is-large-text{font-size:2.25em}.is-larger-text{font-size:3em}.has-drop-cap:not(:focus):first-letter{float:left;font-size:8.4em;font-style:normal;font-weight:100;line-height:.68;margin:.05em .1em 0 0;text-transform:uppercase}body.rtl .has-drop-cap:not(:focus):first-letter{float:none;margin-left:.1em}p.has-drop-cap.has-background{overflow:hidden}:root :where(p.has-background){padding:1.25em 2.375em}:where(p.has-text-color:not(.has-link-color)) a{color:inherit}p.has-text-align-left[style*="writing-mode:vertical-lr"],p.has-text-align-right[style*="writing-mode:vertical-rl"]{rotate:180deg}
+  </style>
+  <style id='wp-block-button-inline-css'>
+  .wp-block-button__link{align-content:center;box-sizing:border-box;cursor:pointer;display:inline-block;height:100%;text-align:center;width:100%;word-break:break-word}.wp-block-button__link.aligncenter{text-align:center}.wp-block-button__link.alignright{text-align:right}:where(.wp-block-button__link){border-radius:9999px;box-shadow:none;padding:calc(.667em + 2px) calc(1.333em + 2px);text-decoration:none}.wp-block-button[style*=text-decoration] .wp-block-button__link{text-decoration:inherit}.wp-block-buttons>.wp-block-button.has-custom-width{max-width:none}.wp-block-buttons>.wp-block-button.has-custom-width .wp-block-button__link{width:100%}.wp-block-buttons>.wp-block-button.has-custom-font-size .wp-block-button__link{font-size:inherit}.wp-block-buttons>.wp-block-button.wp-block-button__width-25{width:calc(25% - var(--wp--style--block-gap, .5em)*.75)}.wp-block-buttons>.wp-block-button.wp-block-button__width-50{width:calc(50% - var(--wp--style--block-gap, .5em)*.5)}.wp-block-buttons>.wp-block-button.wp-block-button__width-75{width:calc(75% - var(--wp--style--block-gap, .5em)*.25)}.wp-block-buttons>.wp-block-button.wp-block-button__width-100{flex-basis:100%;width:100%}.wp-block-buttons.is-vertical>.wp-block-button.wp-block-button__width-25{width:25%}.wp-block-buttons.is-vertical>.wp-block-button.wp-block-button__width-50{width:50%}.wp-block-buttons.is-vertical>.wp-block-button.wp-block-button__width-75{width:75%}.wp-block-button.is-style-squared,.wp-block-button__link.wp-block-button.is-style-squared{border-radius:0}.wp-block-button.no-border-radius,.wp-block-button__link.no-border-radius{border-radius:0!important}:root :where(.wp-block-button .wp-block-button__link.is-style-outline),:root :where(.wp-block-button.is-style-outline>.wp-block-button__link){border:2px solid;padding:.667em 1.333em}:root :where(.wp-block-button .wp-block-button__link.is-style-outline:not(.has-text-color)),:root :where(.wp-block-button.is-style-outline>.wp-block-button__link:not(.has-text-color)){color:currentColor}:root :where(.wp-block-button .wp-block-button__link.is-style-outline:not(.has-background)),:root :where(.wp-block-button.is-style-outline>.wp-block-button__link:not(.has-background)){background-color:initial;background-image:none}
+  </style>
+  <style id='wp-block-buttons-inline-css'>
+  .wp-block-buttons{box-sizing:border-box}.wp-block-buttons.is-vertical{flex-direction:column}.wp-block-buttons.is-vertical>.wp-block-button:last-child{margin-bottom:0}.wp-block-buttons>.wp-block-button{display:inline-block;margin:0}.wp-block-buttons.is-content-justification-left{justify-content:flex-start}.wp-block-buttons.is-content-justification-left.is-vertical{align-items:flex-start}.wp-block-buttons.is-content-justification-center{justify-content:center}.wp-block-buttons.is-content-justification-center.is-vertical{align-items:center}.wp-block-buttons.is-content-justification-right{justify-content:flex-end}.wp-block-buttons.is-content-justification-right.is-vertical{align-items:flex-end}.wp-block-buttons.is-content-justification-space-between{justify-content:space-between}.wp-block-buttons.aligncenter{text-align:center}.wp-block-buttons:not(.is-content-justification-space-between,.is-content-justification-right,.is-content-justification-left,.is-content-justification-center) .wp-block-button.aligncenter{margin-left:auto;margin-right:auto;width:100%}.wp-block-buttons[style*=text-decoration] .wp-block-button,.wp-block-buttons[style*=text-decoration] .wp-block-button__link{text-decoration:inherit}.wp-block-buttons.has-custom-font-size .wp-block-button__link{font-size:inherit}.wp-block-button.aligncenter{text-align:center}
+  </style>
+  <link rel='stylesheet' id='simterm-showyourtermscss-css' href='wp-content/plugins/simterm/css/show-your-terms.min.css' media='all'>
+  <link rel='stylesheet' id='simterm-extracss-css' href='wp-content/plugins/simterm/css/simterm.css' media='all'>
+  <style id='wp-block-post-content-inline-css'>
+  .wp-block-post-content{display:flow-root}
+  </style>
+  <style id='wp-block-comments-inline-css'>
+  .wp-block-post-comments{box-sizing:border-box}.wp-block-post-comments .alignleft{float:left}.wp-block-post-comments .alignright{float:right}.wp-block-post-comments .navigation:after{clear:both;content:"";display:table}.wp-block-post-comments .commentlist{clear:both;list-style:none;margin:0;padding:0}.wp-block-post-comments .commentlist .comment{min-height:2.25em;padding-left:3.25em}.wp-block-post-comments .commentlist .comment p{font-size:1em;line-height:1.8;margin:1em 0}.wp-block-post-comments .commentlist .children{list-style:none;margin:0;padding:0}.wp-block-post-comments .comment-author{line-height:1.5}.wp-block-post-comments .comment-author .avatar{border-radius:1.5em;display:block;float:left;height:2.5em;margin-right:.75em;margin-top:.5em;width:2.5em}.wp-block-post-comments .comment-author cite{font-style:normal}.wp-block-post-comments .comment-meta{font-size:.875em;line-height:1.5}.wp-block-post-comments .comment-meta b{font-weight:400}.wp-block-post-comments .comment-meta .comment-awaiting-moderation{display:block;margin-bottom:1em;margin-top:1em}.wp-block-post-comments .comment-body .commentmetadata{font-size:.875em}.wp-block-post-comments .comment-form-author label,.wp-block-post-comments .comment-form-comment label,.wp-block-post-comments .comment-form-email label,.wp-block-post-comments .comment-form-url label{display:block;margin-bottom:.25em}.wp-block-post-comments .comment-form input:not([type=submit]):not([type=checkbox]),.wp-block-post-comments .comment-form textarea{box-sizing:border-box;display:block;width:100%}.wp-block-post-comments .comment-form-cookies-consent{display:flex;gap:.25em}.wp-block-post-comments .comment-form-cookies-consent #wp-comment-cookies-consent{margin-top:.35em}.wp-block-post-comments .comment-reply-title{margin-bottom:0}.wp-block-post-comments .comment-reply-title :where(small){font-size:var(--wp--preset--font-size--medium,smaller);margin-left:.5em}.wp-block-post-comments .reply{font-size:.875em;margin-bottom:1.4em}.wp-block-post-comments input:not([type=submit]),.wp-block-post-comments textarea{border:1px solid #949494;font-family:inherit;font-size:1em}.wp-block-post-comments input:not([type=submit]):not([type=checkbox]),.wp-block-post-comments textarea{padding:calc(.667em + 2px)}:where(.wp-block-post-comments input[type=submit]){border:none}.wp-block-comments{box-sizing:border-box}
+  </style>
+  <style id='wp-emoji-styles-inline-css'>
+
+        img.wp-smiley, img.emoji {
+                display: inline !important;
+                border: none !important;
+                box-shadow: none !important;
+                height: 1em !important;
+                width: 1em !important;
+                margin: 0 0.07em !important;
+                vertical-align: -0.1em !important;
+                background: none !important;
+                padding: 0 !important;
+        }
+  </style>
+  <link rel='stylesheet' id='wp-block-library-css' href='wp-includes/css/dist/block-library/common.min.css' media='all'>
+  <link rel='stylesheet' id='twentig-blocks-css' href='wp-content/plugins/twentig/dist/blocks/common.css' media='all'>
+  <style id='global-styles-inline-css'>
+  :root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--color--foreground: #000000;--wp--preset--color--background: #ffffff;--wp--preset--color--primary: #1a4548;--wp--preset--color--secondary: #ffe2c7;--wp--preset--color--tertiary: #F6F6F6;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--gradient--vertical-secondary-to-tertiary: linear-gradient(to bottom,var(--wp--preset--color--secondary) 0%,var(--wp--preset--color--tertiary) 100%);--wp--preset--gradient--vertical-secondary-to-background: linear-gradient(to bottom,var(--wp--preset--color--secondary) 0%,var(--wp--preset--color--background) 100%);--wp--preset--gradient--vertical-tertiary-to-background: linear-gradient(to bottom,var(--wp--preset--color--tertiary) 0%,var(--wp--preset--color--background) 100%);--wp--preset--gradient--diagonal-primary-to-foreground: linear-gradient(to bottom right,var(--wp--preset--color--primary) 0%,var(--wp--preset--color--foreground) 100%);--wp--preset--gradient--diagonal-secondary-to-background: linear-gradient(to bottom right,var(--wp--preset--color--secondary) 50%,var(--wp--preset--color--background) 50%);--wp--preset--gradient--diagonal-background-to-secondary: linear-gradient(to bottom right,var(--wp--preset--color--background) 50%,var(--wp--preset--color--secondary) 50%);--wp--preset--gradient--diagonal-tertiary-to-background: linear-gradient(to bottom right,var(--wp--preset--color--tertiary) 50%,var(--wp--preset--color--background) 50%);--wp--preset--gradient--diagonal-background-to-tertiary: linear-gradient(to bottom right,var(--wp--preset--color--background) 50%,var(--wp--preset--color--tertiary) 50%);--wp--preset--font-size--small: 1rem;--wp--preset--font-size--medium: 1.125rem;--wp--preset--font-size--large: 1.75rem;--wp--preset--font-size--x-large: clamp(1.75rem, 3vw, 2.25rem);--wp--preset--font-size--xx-large: clamp(2rem, 4vw, 2.75rem);--wp--preset--font-family--system-font: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;--wp--preset--font-family--source-serif-pro: "Source Serif Pro", serif;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);--wp--custom--spacing--small: max(1.25rem, 5vw);--wp--custom--spacing--medium: clamp(2rem, 8vw, calc(4 * var(--wp--style--block-gap)));--wp--custom--spacing--large: clamp(4rem, 10vw, 8rem);--wp--custom--spacing--outer: var(--wp--custom--spacing--small, 1.25rem);--wp--custom--typography--font-size--huge: clamp(2.25rem, 4vw, 2.75rem);--wp--custom--typography--font-size--gigantic: clamp(2.75rem, 6vw, 3.25rem);--wp--custom--typography--font-size--colossal: clamp(3.25rem, 8vw, 6.25rem);--wp--custom--typography--line-height--tiny: 1.15;--wp--custom--typography--line-height--small: 1.2;--wp--custom--typography--line-height--medium: 1.4;--wp--custom--typography--line-height--normal: 1.6;}:root { --wp--style--global--content-size: 650px;--wp--style--global--wide-size: 1000px; }:where(body) { margin: 0; }.wp-site-blocks > .alignleft { float: left; margin-right: 2em; }.wp-site-blocks > .alignright { float: right; margin-left: 2em; }.wp-site-blocks > .aligncenter { justify-content: center; margin-left: auto; margin-right: auto; }:where(.wp-site-blocks) > * { margin-block-start: 1.5rem; margin-block-end: 0; }:where(.wp-site-blocks) > :first-child { margin-block-start: 0; }:where(.wp-site-blocks) > :last-child { margin-block-end: 0; }:root { --wp--style--block-gap: 1.5rem; }:root :where(.is-layout-flow) > :first-child{margin-block-start: 0;}:root :where(.is-layout-flow) > :last-child{margin-block-end: 0;}:root :where(.is-layout-flow) > *{margin-block-start: 1.5rem;margin-block-end: 0;}:root :where(.is-layout-constrained) > :first-child{margin-block-start: 0;}:root :where(.is-layout-constrained) > :last-child{margin-block-end: 0;}:root :where(.is-layout-constrained) > *{margin-block-start: 1.5rem;margin-block-end: 0;}:root :where(.is-layout-flex){gap: 1.5rem;}:root :where(.is-layout-grid){gap: 1.5rem;}.is-layout-flow > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}.is-layout-flow > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}.is-layout-flow > .aligncenter{margin-left: auto !important;margin-right: auto !important;}.is-layout-constrained > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}.is-layout-constrained > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}.is-layout-constrained > .aligncenter{margin-left: auto !important;margin-right: auto !important;}.is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)){max-width: var(--wp--style--global--content-size);margin-left: auto !important;margin-right: auto !important;}.is-layout-constrained > .alignwide{max-width: var(--wp--style--global--wide-size);}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}body{background-color: var(--wp--preset--color--background);color: var(--wp--preset--color--foreground);font-family: var(--wp--preset--font-family--system-font);font-size: var(--wp--preset--font-size--medium);line-height: var(--wp--custom--typography--line-height--normal);padding-top: 0px;padding-right: 0px;padding-bottom: 0px;padding-left: 0px;}a:where(:not(.wp-element-button)){color: var(--wp--preset--color--foreground);text-decoration: underline;}h1{font-family: var(--wp--preset--font-family--source-serif-pro);font-size: var(--wp--custom--typography--font-size--colossal);font-weight: 300;line-height: var(--wp--custom--typography--line-height--tiny);}h2{font-family: var(--wp--preset--font-family--source-serif-pro);font-size: var(--wp--custom--typography--font-size--gigantic);font-weight: 300;line-height: var(--wp--custom--typography--line-height--small);}h3{font-family: var(--wp--preset--font-family--source-serif-pro);font-size: var(--wp--custom--typography--font-size--huge);font-weight: 300;line-height: var(--wp--custom--typography--line-height--tiny);}h4{font-family: var(--wp--preset--font-family--source-serif-pro);font-size: var(--wp--preset--font-size--x-large);font-weight: 300;line-height: var(--wp--custom--typography--line-height--tiny);}h5{font-family: var(--wp--preset--font-family--system-font);font-size: var(--wp--preset--font-size--medium);font-weight: 700;line-height: var(--wp--custom--typography--line-height--normal);text-transform: uppercase;}h6{font-family: var(--wp--preset--font-family--system-font);font-size: var(--wp--preset--font-size--medium);font-weight: 400;line-height: var(--wp--custom--typography--line-height--normal);text-transform: uppercase;}:root :where(.wp-element-button, .wp-block-button__link){background-color: #32373c;border-width: 0;color: #fff;font-family: inherit;font-size: inherit;line-height: inherit;padding: calc(0.667em + 2px) calc(1.333em + 2px);text-decoration: none;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-foreground-color{color: var(--wp--preset--color--foreground) !important;}.has-background-color{color: var(--wp--preset--color--background) !important;}.has-primary-color{color: var(--wp--preset--color--primary) !important;}.has-secondary-color{color: var(--wp--preset--color--secondary) !important;}.has-tertiary-color{color: var(--wp--preset--color--tertiary) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-foreground-background-color{background-color: var(--wp--preset--color--foreground) !important;}.has-background-background-color{background-color: var(--wp--preset--color--background) !important;}.has-primary-background-color{background-color: var(--wp--preset--color--primary) !important;}.has-secondary-background-color{background-color: var(--wp--preset--color--secondary) !important;}.has-tertiary-background-color{background-color: var(--wp--preset--color--tertiary) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-foreground-border-color{border-color: var(--wp--preset--color--foreground) !important;}.has-background-border-color{border-color: var(--wp--preset--color--background) !important;}.has-primary-border-color{border-color: var(--wp--preset--color--primary) !important;}.has-secondary-border-color{border-color: var(--wp--preset--color--secondary) !important;}.has-tertiary-border-color{border-color: var(--wp--preset--color--tertiary) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-vertical-secondary-to-tertiary-gradient-background{background: var(--wp--preset--gradient--vertical-secondary-to-tertiary) !important;}.has-vertical-secondary-to-background-gradient-background{background: var(--wp--preset--gradient--vertical-secondary-to-background) !important;}.has-vertical-tertiary-to-background-gradient-background{background: var(--wp--preset--gradient--vertical-tertiary-to-background) !important;}.has-diagonal-primary-to-foreground-gradient-background{background: var(--wp--preset--gradient--diagonal-primary-to-foreground) !important;}.has-diagonal-secondary-to-background-gradient-background{background: var(--wp--preset--gradient--diagonal-secondary-to-background) !important;}.has-diagonal-background-to-secondary-gradient-background{background: var(--wp--preset--gradient--diagonal-background-to-secondary) !important;}.has-diagonal-tertiary-to-background-gradient-background{background: var(--wp--preset--gradient--diagonal-tertiary-to-background) !important;}.has-diagonal-background-to-tertiary-gradient-background{background: var(--wp--preset--gradient--diagonal-background-to-tertiary) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}.has-xx-large-font-size{font-size: var(--wp--preset--font-size--xx-large) !important;}.has-system-font-font-family{font-family: var(--wp--preset--font-family--system-font) !important;}.has-source-serif-pro-font-family{font-family: var(--wp--preset--font-family--source-serif-pro) !important;}dl dt, dl dd tt {font-weight:bold}
+
+  header.page-notes p.post-modified-info {
+  font-size:small;
+  border-top:1px solid;
+  padding-top:15px;
+  padding-left:15px;
+  }
+
+  div.infolist ul li { padding-bottom:10px }
+
+  div.line span.text-green {
+        color:green;
+  }
+  div.line span.text-amber {
+        color:orange;
+  }
+  div.line span.text-red {
+        color:red;
+  }
+
+  div.line span.text-white {
+        color:white;
+  }
+  :root :where(.wp-block-button .wp-block-button__link){background-color: var(--wp--preset--color--primary);border-radius: 0;color: var(--wp--preset--color--background);font-size: var(--wp--preset--font-size--medium);}
+  :root :where(.wp-block-post-title){font-family: var(--wp--preset--font-family--source-serif-pro);font-size: var(--wp--custom--typography--font-size--gigantic);font-weight: 300;line-height: var(--wp--custom--typography--line-height--tiny);}
+  :root :where(.wp-block-site-title){font-family: var(--wp--preset--font-family--system-font);font-size: var(--wp--preset--font-size--medium);font-style: italic;font-weight: normal;line-height: var(--wp--custom--typography--line-height--normal);}
+  @media (max-width: 767px) { .tw-sm-hidden { display: none !important; }}@media (min-width: 768px) and (max-width: 1023px) { .tw-md-hidden { display: none !important; }}@media (min-width: 1024px) { .tw-lg-hidden { display: none !important; }}@media (width < 768px) { .tw-sm-hidden { display: none !important; }}@media (768px <= width < 1024px) { .tw-md-hidden { display: none !important; }}@media (width >= 1024px) { .tw-lg-hidden { display: none !important; }}
+  .tw-mt-0{margin-top:0px!important;}.tw-mb-0{margin-bottom:0px!important;}.tw-mt-1{margin-top:5px!important;}.tw-mb-1{margin-bottom:5px!important;}.tw-mt-2{margin-top:10px!important;}.tw-mb-2{margin-bottom:10px!important;}.tw-mt-3{margin-top:15px!important;}.tw-mb-3{margin-bottom:15px!important;}.tw-mt-4{margin-top:20px!important;}.tw-mb-4{margin-bottom:20px!important;}.tw-mt-5{margin-top:30px!important;}.tw-mb-5{margin-bottom:30px!important;}.tw-mt-6{margin-top:40px!important;}.tw-mb-6{margin-bottom:40px!important;}.tw-mt-7{margin-top:50px!important;}.tw-mb-7{margin-bottom:50px!important;}.tw-mt-8{margin-top:60px!important;}.tw-mb-8{margin-bottom:60px!important;}.tw-mt-9{margin-top:80px!important;}.tw-mb-9{margin-bottom:80px!important;}.tw-mt-10{margin-top:100px!important;}.tw-mb-10{margin-bottom:100px!important;}.tw-mt-auto{margin-top:auto!important;}.tw-mb-auto{margin-bottom:auto!important;}
+  </style>
+  <style id='core-block-supports-inline-css'>
+  .wp-container-core-navigation-is-layout-f665d2b5{justify-content:flex-end;}.wp-container-core-group-is-layout-901ef6e1{justify-content:space-between;}.wp-elements-afc7e0888f55a8a254a403d6c3413150 a:where(:not(.wp-element-button)){color:#4f455c;}.wp-container-core-buttons-is-layout-a89b3969{justify-content:center;}.wp-container-core-group-is-layout-37312ec6{justify-content:space-between;}
+  </style>
+  <style id='wp-block-template-skip-link-inline-css'>
+
+                .skip-link.screen-reader-text {
+                        border: 0;
+                        clip-path: inset(50%);
+                        height: 1px;
+                        margin: -1px;
+                        overflow: hidden;
+                        padding: 0;
+                        position: absolute !important;
+                        width: 1px;
+                        word-wrap: normal !important;
+                }
+
+                .skip-link.screen-reader-text:focus {
+                        background-color: #eee;
+                        clip-path: none;
+                        color: #444;
+                        display: block;
+                        font-size: 1em;
+                        height: auto;
+                        left: 5px;
+                        line-height: normal;
+                        padding: 15px 23px 14px;
+                        text-decoration: none;
+                        top: 5px;
+                        width: auto;
+                        z-index: 100000;
+                }
+  </style>
+  <link rel='stylesheet' id='twentytwentytwo-style-css' href='wp-content/themes/twentytwentytwo/style.css' media='all'>
+  <link rel='stylesheet' id='aurora-heatmap-css' href='wp-content/plugins/aurora-heatmap/style.css' media='all'>
+  <link rel='stylesheet' id='twentig-global-spacing-css' href='wp-content/plugins/twentig/dist/blocks/tw-spacing.css' media='all'>
+  <style id='twentig-global-spacing-inline-css'>
+  :where(.wp-block-post-content) .wp-block-group.alignfull:not(.has-background){margin-block:var(--wp--custom--spacing--tw-x-large)}:where(.wp-block-post-content) .alignwide:where(.wp-block-cover,.wp-block-group,.wp-block-media-text),:where(.wp-block-post-content) .alignwide:where(.wp-block-cover,.wp-block-group,.wp-block-media-text) + *{margin-top:var(--wp--custom--spacing--tw-medium)}.wp-site-blocks .wp-block-spacer.wp-block-spacer,.wp-site-blocks .wp-block-spacer.wp-block-spacer + *,.wp-block-post-content>:is(*,.wp-block-group):first-child{margin-top:0}.wp-block-post-content .wp-block-group.alignfull:last-child{margin-bottom:0}
+  </style>
+  <link rel='stylesheet' id='twentig-twentytwo-css' href='wp-content/plugins/twentig/dist/css/twentytwentytwo/style.css'
+  media='all'>
+  <script id="aurora-heatmap-js-extra">
+  var aurora_heatmap = {"_mode":"reporter","ajax_url":"https:\/\/makestaticsite.sh\/wp-admin\/admin-ajax.php","action":"aurora_heatmap","reports":"click_pc,click_mobile","debug":"0","ajax_delay_time":"3000","ajax_interval":"10","ajax_bulk":null};
+  </script>
+  <script src="wp-content/plugins/aurora-heatmap/js/aurora-heatmap.min.js" id="aurora-heatmap-js"></script>
+  <link rel="https://api.w.org/" href="wp-json/index.html">
+  <link rel="alternate" title="JSON" type="application/json" href="wp-json/wp/v2/pages/6">
+  <link rel="EditURI" type="application/rsd+xml" title="RSD" href="xmlrpc.php?rsd">
+  <meta name="generator" content="WordPress 6.8.1">
+  <link rel="canonical" href="https://makestaticsite.sh/">
+  <link rel='shortlink' href='index.html'>
+  <link rel="alternate" title="oEmbed (JSON)" type="application/json+oembed" href="wp-json/oembed/1.0/embed?url=https%3A%2F%2Fmss.localweb%2F">
+  <link rel="alternate" title="oEmbed (XML)" type="text/xml+oembed"
+  href="wp-json/oembed/1.0/embed?url=https%3A%2F%2Fmss.localweb%2F&amp;format=xml">
+  <noscript>
+  <style>
+  .tw-block-animation{opacity:1;transform:none;clip-path:none;}
+  </style></noscript>
+  <script>
+  /* Redirect searches from home page */         
+  var urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('s'))
+  {
+  /* Check for server host - insert index page if it doesn't exist   */
+    if ((typeof window.location.hostname !== 'undefined') && (window.location.hostname!==''))
+    {
+        var fileSuffix='';
+    }
+    else
+    {
+        var fileSuffix='index.html';    /* for offline reading  */
+    }
+    var searchQuery= urlParams.get('s');
+    window.location.replace("search/" + fileSuffix + "?q="+searchQuery);
+  }
+  </script>
+  <meta name="description" content="MakeStaticSite is a command-line tool, written in BASH, for generating and refining static versions of existing (typically dynamic) websites and sites archived by the Wayback Machine. Output can be viewed offline or deployed using various means, including to a CDN.">
+
+  <script type="importmap" id="wp-importmap">
+  {"imports":{"@wordpress\/interactivity":"https:\/\/makestaticsite.sh\/wp-includes\/js\/dist\/script-modules\/interactivity\/index.min.js"}}
+  </script>
+  <script type="module" src="wp-includes/js/dist/script-modules/block-library/navigation/view.min.js"
+  id="@wordpress/block-library/navigation/view-js-module"></script>
+  <link rel="modulepreload" href="wp-includes/js/dist/script-modules/interactivity/index.min.js"
+  id="@wordpress/interactivity-js-modulepreload">
+  <style class='wp-fonts-local'>
+  @font-face{font-family:"Source Serif Pro";font-style:normal;font-weight:200 900;font-display:fallback;src:url('wp-content/themes/twentytwentytwo/assets/fonts/source-serif-pro/SourceSerif4Variable-Roman.ttf.woff2') format('woff2');font-stretch:normal;}
+  @font-face{font-family:"Source Serif Pro";font-style:italic;font-weight:200 900;font-display:fallback;src:url('wp-content/themes/twentytwentytwo/assets/fonts/source-serif-pro/SourceSerif4Variable-Italic.ttf.woff2') format('woff2');font-stretch:normal;}
+  </style>
+</head>
+<body data-rsssl="1" class="home wp-singular page-template-default page page-id-6 wp-embed-responsive wp-theme-twentytwentytwo wp-child-theme-makestaticsite">
+  <div class="wp-site-blocks">
+    <header class="wp-block-template-part">
+      <div class="wp-block-group is-layout-constrained wp-block-group-is-layout-constrained">
+        <div class="wp-block-group alignwide is-content-justification-space-between is-layout-flex wp-container-core-group-is-layout-901ef6e1 wp-block-group-is-layout-flex"
+        style="padding-top:var(--wp--custom--spacing--small, 1.25rem);padding-bottom:var(--wp--custom--spacing--large, 8rem)">
+          <div class="wp-block-group is-layout-flex wp-block-group-is-layout-flex">
+            <h1 class="wp-block-site-title"><a href="index.html"
+            target="_self" rel="home" aria-current="page">MakeStaticSite</a></h1>
+          </div>
+          <nav class="is-responsive items-justified-right wp-block-navigation is-content-justification-right is-layout-flex wp-container-core-navigation-is-layout-f665d2b5 wp-block-navigation-is-layout-flex"
+          aria-label="Header navigation" data-wp-interactive="core/navigation" data-wp-context='{"overlayOpenedBy":{"click":false,"hover":false,"focus":false},"type":"overlay","roleAttribute":"","ariaLabel":"Menu"}'>
+            <button aria-haspopup="dialog" aria-label="Open menu"
+            class="wp-block-navigation__responsive-container-open"
+            data-wp-on-async--click="actions.openMenuOnClick"
+            data-wp-on--keydown="actions.handleMenuKeydown"><svg width="24" height="24"
+            xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24"
+            aria-hidden="true" focusable="false">
+            <rect x="4" y="7.5" width="16" height="1.5"></rect>
+            <rect x="4" y="15" width="16" height="1.5"></rect>
+            </svg></button>
+            <div class="wp-block-navigation__responsive-container"
+            id="modal-2" data-wp-class--has-modal-open="state.isMenuOpen" data-wp-class--is-menu-open="state.isMenuOpen" data-wp-watch="callbacks.initMenu"
+            data-wp-on--keydown="actions.handleMenuKeydown"
+            data-wp-on-async--focusout="actions.handleMenuFocusout"
+            tabindex="-1">
+              <div class="wp-block-navigation__responsive-close"
+              tabindex="-1">
+                <div class="wp-block-navigation__responsive-dialog"
+                data-wp-bind--aria-modal="state.ariaModal"
+                data-wp-bind--aria-label="state.ariaLabel"
+                data-wp-bind--role="state.roleAttribute">
+                  <button aria-label="Close menu" class="wp-block-navigation__responsive-container-close"
+                  data-wp-on-async--click="actions.closeMenuOnClick"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24"
+                  width="24" height="24" aria-hidden="true"
+                  focusable="false">
+                  <path d="m13.06 12 6.47-6.47-1.06-1.06L12 10.94 5.53 4.47 4.47 5.53 10.94 12l-6.47 6.47 1.06 1.06L12 13.06l6.47 6.47 1.06-1.06L13.06 12Z">
+                  </path></svg></button>
+                  <div class="wp-block-navigation__responsive-container-content"
+                  data-wp-watch="callbacks.focusFirstElement" id="modal-2-content">
+                    <ul class="wp-block-navigation__container is-responsive items-justified-right wp-block-navigation">
+                      <li data-wp-context="{ &quot;submenuOpenedBy&quot;: { &quot;click&quot;: false, &quot;hover&quot;: false, &quot;focus&quot;: false }, &quot;type&quot;: &quot;submenu&quot;, &quot;modal&quot;: null }"
+                      data-wp-interactive="core/navigation"
+                      data-wp-on--focusout="actions.handleMenuFocusout"
+                      data-wp-on--keydown="actions.handleMenuKeydown"
+                      data-wp-on-async--mouseenter="actions.openMenuOnHover"
+                      data-wp-on-async--mouseleave="actions.closeMenuOnHover" data-wp-watch="callbacks.initMenu" tabindex="-1" class="wp-block-navigation-item has-child open-on-hover-click wp-block-navigation-submenu">
+                        <a class="wp-block-navigation-item__content" href="about/index.html"><span class="wp-block-navigation-item__label">About</span></a><button data-wp-bind--aria-expanded="state.isMenuOpen"
+                        data-wp-on-async--click="actions.toggleMenuOnClick" aria-label="About submenu" class="wp-block-navigation__submenu-icon wp-block-navigation-submenu__toggle"><svg xmlns="http://www.w3.org/2000/svg"
+                        width="12" height="12" viewbox="0 0 12 12"
+                        fill="none" aria-hidden="true" focusable="false">
+                        <path d="M1.50002 4L6.00002 8L10.5 4"
+                        stroke-width="1.5"></path></svg></button>
+                        <ul data-wp-on-async--focus="actions.openMenuOnFocus" class="wp-block-navigation__submenu-container wp-block-navigation-submenu">
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="about/features/index.html"><span class="wp-block-navigation-item__label">
+                            Features</span></a>
+                          </li>
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="about/limitations/index.html"><span class="wp-block-navigation-item__label">
+                            Limitations</span></a>
+                          </li>
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="about/alternatives/index.html"><span class="wp-block-navigation-item__label">
+                            Alternatives</span></a>
+                          </li>
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="about/this-website/index.html"><span class="wp-block-navigation-item__label">
+                            This website</span></a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li data-wp-context="{ &quot;submenuOpenedBy&quot;: { &quot;click&quot;: false, &quot;hover&quot;: false, &quot;focus&quot;: false }, &quot;type&quot;: &quot;submenu&quot;, &quot;modal&quot;: null }"
+                      data-wp-interactive="core/navigation"
+                      data-wp-on--focusout="actions.handleMenuFocusout"
+                      data-wp-on--keydown="actions.handleMenuKeydown"
+                      data-wp-on-async--mouseenter="actions.openMenuOnHover"
+                      data-wp-on-async--mouseleave="actions.closeMenuOnHover" data-wp-watch="callbacks.initMenu" tabindex="-1" class="wp-block-navigation-item has-child open-on-hover-click wp-block-navigation-submenu">
+                        <a class="wp-block-navigation-item__content" href="getting-started/index.html"><span class="wp-block-navigation-item__label">Getting
+                        started</span></a><button data-wp-bind--aria-expanded="state.isMenuOpen"
+                        data-wp-on-async--click="actions.toggleMenuOnClick" aria-label="Getting started submenu" class="wp-block-navigation__submenu-icon wp-block-navigation-submenu__toggle"><svg xmlns="http://www.w3.org/2000/svg"
+                        width="12" height="12" viewbox="0 0 12 12"
+                        fill="none" aria-hidden="true" focusable="false">
+                        <path d="M1.50002 4L6.00002 8L10.5 4"
+                        stroke-width="1.5"></path></svg></button>
+                        <ul data-wp-on-async--focus="actions.openMenuOnFocus" class="wp-block-navigation__submenu-container wp-block-navigation-submenu">
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="getting-started/requirements/index.html">
+                            <span class="wp-block-navigation-item__label">Requirements</span></a>
+                          </li>
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="getting-started/installing/index.html">
+                            <span class="wp-block-navigation-item__label">Download
+                            & Installation</span></a>
+                          </li>
+                          <li data-wp-context="{ &quot;submenuOpenedBy&quot;: { &quot;click&quot;: false, &quot;hover&quot;: false, &quot;focus&quot;: false }, &quot;type&quot;: &quot;submenu&quot;, &quot;modal&quot;: null }"
+                          data-wp-interactive="core/navigation"
+                          data-wp-on--focusout="actions.handleMenuFocusout"
+                          data-wp-on--keydown="actions.handleMenuKeydown"
+                          data-wp-on-async--mouseenter="actions.openMenuOnHover"
+                          data-wp-on-async--mouseleave="actions.closeMenuOnHover" data-wp-watch="callbacks.initMenu" tabindex="-1" class="wp-block-navigation-item has-child open-on-hover-click wp-block-navigation-submenu">
+                            <a class="wp-block-navigation-item__content"
+                            href="getting-started/setup/index.html"><span class="wp-block-navigation-item__label">
+                            Setup</span></a><button data-wp-bind--aria-expanded="state.isMenuOpen"
+                            data-wp-on-async--click="actions.toggleMenuOnClick" aria-label="Setup submenu" class="wp-block-navigation__submenu-icon wp-block-navigation-submenu__toggle"><svg xmlns="http://www.w3.org/2000/svg"
+                            width="12" height="12" viewbox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
+                            <path d="M1.50002 4L6.00002 8L10.5 4"
+                            stroke-width="1.5">
+                            </path></svg></button>
+                            <ul data-wp-on-async--focus="actions.openMenuOnFocus" class="wp-block-navigation__submenu-container wp-block-navigation-submenu">
+                              <li class="wp-block-navigation-item wp-block-navigation-link">
+                                <a class="wp-block-navigation-item__content"
+                                href="getting-started/setup/examples/index.html">
+                                <span class="wp-block-navigation-item__label">Examples</span></a>
+                              </li>
+                              <li class="wp-block-navigation-item wp-block-navigation-link">
+                                <a class="wp-block-navigation-item__content"
+                                href="getting-started/setup/setup-summary/index.html">
+                                <span class="wp-block-navigation-item__label">Summary</span></a>
+                              </li>
+                            </ul>
+                          </li>
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="getting-started/run-mss/index.html"><span class="wp-block-navigation-item__label">
+                            Run</span></a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li data-wp-context="{ &quot;submenuOpenedBy&quot;: { &quot;click&quot;: false, &quot;hover&quot;: false, &quot;focus&quot;: false }, &quot;type&quot;: &quot;submenu&quot;, &quot;modal&quot;: null }"
+                      data-wp-interactive="core/navigation"
+                      data-wp-on--focusout="actions.handleMenuFocusout"
+                      data-wp-on--keydown="actions.handleMenuKeydown"
+                      data-wp-on-async--mouseenter="actions.openMenuOnHover"
+                      data-wp-on-async--mouseleave="actions.closeMenuOnHover" data-wp-watch="callbacks.initMenu" tabindex="-1" class="wp-block-navigation-item has-child open-on-hover-click wp-block-navigation-submenu">
+                        <a class="wp-block-navigation-item__content" href="in-depth/index.html"><span class="wp-block-navigation-item__label">In
+                        Depth</span></a><button data-wp-bind--aria-expanded="state.isMenuOpen"
+                        data-wp-on-async--click="actions.toggleMenuOnClick" aria-label="In Depth submenu" class="wp-block-navigation__submenu-icon wp-block-navigation-submenu__toggle"><svg xmlns="http://www.w3.org/2000/svg"
+                        width="12" height="12" viewbox="0 0 12 12"
+                        fill="none" aria-hidden="true" focusable="false">
+                        <path d="M1.50002 4L6.00002 8L10.5 4"
+                        stroke-width="1.5"></path></svg></button>
+                        <ul data-wp-on-async--focus="actions.openMenuOnFocus" class="wp-block-navigation__submenu-container wp-block-navigation-submenu">
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="in-depth/architecture/index.html"><span class="wp-block-navigation-item__label">
+                            Architecture</span></a>
+                          </li>
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="in-depth/source/index.html"><span class="wp-block-navigation-item__label">
+                            Source and destination</span></a>
+                          </li>
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="in-depth/online-and-offline/index.html">
+                            <span class="wp-block-navigation-item__label">Online
+                            and offline</span></a>
+                          </li>
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="in-depth/workflow/index.html"><span class="wp-block-navigation-item__label">
+                            Workflow</span></a>
+                          </li>
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="in-depth/options-management/index.html">
+                            <span class="wp-block-navigation-item__label">Options
+                            Management</span></a>
+                          </li>
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="in-depth/wordpress/index.html"><span class="wp-block-navigation-item__label">
+                            WordPress Prep</span></a>
+                          </li>
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="in-depth/access-restrictions/index.html">
+                            <span class="wp-block-navigation-item__label">Access
+                            Restrictions</span></a>
+                          </li>
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="in-depth/converting-an-existing-site/index.html">
+                            <span class="wp-block-navigation-item__label">Site
+                            Conversion</span></a>
+                          </li>
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="in-depth/development-domain/index.html">
+                            <span class="wp-block-navigation-item__label">Domain
+                            Considerations</span></a>
+                          </li>
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="in-depth/digital-preservation/index.html">
+                            <span class="wp-block-navigation-item__label">Digital
+                            Preservation</span></a>
+                          </li>
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="in-depth/digital-preservation/wayback-machine/index.html">
+                            <span class="wp-block-navigation-item__label">The
+                            Wayback Machine</span></a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li data-wp-context="{ &quot;submenuOpenedBy&quot;: { &quot;click&quot;: false, &quot;hover&quot;: false, &quot;focus&quot;: false }, &quot;type&quot;: &quot;submenu&quot;, &quot;modal&quot;: null }"
+                      data-wp-interactive="core/navigation"
+                      data-wp-on--focusout="actions.handleMenuFocusout"
+                      data-wp-on--keydown="actions.handleMenuKeydown"
+                      data-wp-on-async--mouseenter="actions.openMenuOnHover"
+                      data-wp-on-async--mouseleave="actions.closeMenuOnHover" data-wp-watch="callbacks.initMenu" tabindex="-1" class="wp-block-navigation-item has-child open-on-hover-click wp-block-navigation-submenu">
+                        <a class="wp-block-navigation-item__content" href="help/index.html"><span class="wp-block-navigation-item__label">Help</span></a><button data-wp-bind--aria-expanded="state.isMenuOpen"
+                        data-wp-on-async--click="actions.toggleMenuOnClick" aria-label="Help submenu" class="wp-block-navigation__submenu-icon wp-block-navigation-submenu__toggle"><svg xmlns="http://www.w3.org/2000/svg"
+                        width="12" height="12" viewbox="0 0 12 12"
+                        fill="none" aria-hidden="true" focusable="false">
+                        <path d="M1.50002 4L6.00002 8L10.5 4"
+                        stroke-width="1.5"></path></svg></button>
+                        <ul data-wp-on-async--focus="actions.openMenuOnFocus" class="wp-block-navigation__submenu-container wp-block-navigation-submenu">
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="help/configuration/index.html"><span class="wp-block-navigation-item__label">
+                            Configuration</span></a>
+                          </li>
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="help/options/index.html"><span class="wp-block-navigation-item__label">Runtime
+                            Options</span></a>
+                          </li>
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="help/snippets/index.html"><span class="wp-block-navigation-item__label">Snippets</span></a>
+                          </li>
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="help/faq/index.html"><span class="wp-block-navigation-item__label">FAQ</span></a>
+                          </li>
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="help/troubleshooting/index.html"><span class="wp-block-navigation-item__label">
+                            Troubleshooting</span></a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li data-wp-context="{ &quot;submenuOpenedBy&quot;: { &quot;click&quot;: false, &quot;hover&quot;: false, &quot;focus&quot;: false }, &quot;type&quot;: &quot;submenu&quot;, &quot;modal&quot;: null }"
+                      data-wp-interactive="core/navigation"
+                      data-wp-on--focusout="actions.handleMenuFocusout"
+                      data-wp-on--keydown="actions.handleMenuKeydown"
+                      data-wp-on-async--mouseenter="actions.openMenuOnHover"
+                      data-wp-on-async--mouseleave="actions.closeMenuOnHover" data-wp-watch="callbacks.initMenu" tabindex="-1" class="wp-block-navigation-item has-child open-on-hover-click wp-block-navigation-submenu">
+                        <a class="wp-block-navigation-item__content" href="developers/index.html"><span class="wp-block-navigation-item__label">Developers</span></a><button data-wp-bind--aria-expanded="state.isMenuOpen"
+                        data-wp-on-async--click="actions.toggleMenuOnClick" aria-label="Developers submenu" class="wp-block-navigation__submenu-icon wp-block-navigation-submenu__toggle"><svg xmlns="http://www.w3.org/2000/svg"
+                        width="12" height="12" viewbox="0 0 12 12"
+                        fill="none" aria-hidden="true" focusable="false">
+                        <path d="M1.50002 4L6.00002 8L10.5 4"
+                        stroke-width="1.5"></path></svg></button>
+                        <ul data-wp-on-async--focus="actions.openMenuOnFocus" class="wp-block-navigation__submenu-container wp-block-navigation-submenu">
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="developers/current-status/index.html"><span class="wp-block-navigation-item__label">
+                            Current Status</span></a>
+                          </li>
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="developers/releases/index.html"><span class="wp-block-navigation-item__label">
+                            Releases</span></a>
+                          </li>
+                          <li class="wp-block-navigation-item wp-block-navigation-link">
+                            <a class="wp-block-navigation-item__content"
+                            href="developers/further-work/index.html"><span class="wp-block-navigation-item__label">
+                            Further work</span></a>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                    <form role="search" method="get" action="index.html" class="wp-block-search__button-inside wp-block-search__icon-button wp-block-search">
+                      <label class="wp-block-search__label screen-reader-text"
+                      for="wp-block-search__input-1">Search</label>
+                      <div class="wp-block-search__inside-wrapper">
+                        <input class="wp-block-search__input" id="wp-block-search__input-1" placeholder=""
+                        value="" type="search" name="s" required=""><button aria-label="Search" class="wp-block-search__button has-icon wp-element-button"
+                        type="submit"><svg class="search-icon"
+                        viewbox="0 0 24 24" width="24" height="24">
+                        <path d="M13 5c-3.3 0-6 2.7-6 6 0 1.4.5 2.7 1.3 3.7l-3.8 3.8 1.1 1.1 3.8-3.8c1 .8 2.3 1.3 3.7 1.3 3.3 0 6-2.7 6-6S16.3 5 13 5zm0 10.5c-2.5 0-4.5-2-4.5-4.5s2-4.5 4.5-4.5 4.5 2 4.5 4.5-2 4.5-4.5 4.5z">
+                        </path></svg></button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </header>
+    <main class="wp-block-group is-layout-flow wp-block-group-is-layout-flow">
+      <div class="wp-block-group is-layout-constrained wp-block-group-is-layout-constrained">
+        <h1 style="margin-bottom:var(--wp--custom--spacing--medium, 6rem);"
+        class="alignwide wp-block-post-title">Welcome</h1>
+        <hr class="wp-block-separator has-css-opacity alignwide is-style-wide">
+      </div>
+      <div style="height:32px" aria-hidden="true" class="wp-block-spacer"></div>
+      <div class="entry-content wp-block-post-content is-layout-constrained wp-block-post-content-is-layout-constrained">
+        <div class="showyourterms blue" data-title="Terminal">
+          <div class="command white" data-action="command" data-delay="500" data-speed="50">./makestaticsite.sh&nbsp;-i&nbsp;mssweb</div>
+          <div class="line" data-delay="300" data-speed="100">Welcome&nbsp;to&nbsp;MakeStaticSite&nbsp;version&nbsp;0.29.7</div>
+          <div class="line" data-delay="100" data-speed="100">Starting&nbsp;at&nbsp;phase&nbsp;0:&nbsp;Initialisation.</div>
+          <div class="line" data-delay="100" data-speed="100">Ending&nbsp;at&nbsp;phase&nbsp;9:&nbsp;Deploy.</div>
+          <div class="line" data-delay="100" data-speed="100">Reading&nbsp;custom&nbsp;configuration&nbsp;data&nbsp;from&nbsp;config/mssweb.cfg&nbsp;&#8230;</div>
+          <div class="line" data-delay="300" data-speed="100">Starting&nbsp;the&nbsp;static&nbsp;site&nbsp;generation&nbsp;&#8230;</div>
+          <div class="line" data-delay="300" data-speed="100">WP-CLI&nbsp;is&nbsp;installed&nbsp;and&nbsp;will&nbsp;be&nbsp;run&nbsp;locally</div>
+          <div class="line" data-delay="1000" data-speed="100">Found&nbsp;WordPress&nbsp;site&nbsp;at&nbsp;/var/webs/mss.localweb&nbsp;&#8230;</div><div class="line" data-delay="600" data-speed="100">Running&nbsp;Wget&nbsp;with&nbsp;options:&nbsp;&#8211;recursive&nbsp;&#8211;timestamping&nbsp;&#8211;level=inf&nbsp;&#8230;</div>
+          <div class="line" data-delay="100" data-speed="100">Creating&nbsp;a&nbsp;mirror&nbsp;of&nbsp;https://mss.localweb&nbsp;in</div>
+          <div class="line" data-delay="2000" data-speed="100">mirror/mssweb20240522_104156/mss.localweb&nbsp;&#8230;</div>
+          <div class="line" data-delay="2000" data-speed="100">Generating&nbsp;a&nbsp;list&nbsp;of&nbsp;extra&nbsp;asset&nbsp;URLs&nbsp;for&nbsp;Wget&nbsp;&#8230;</div>
+          <div class="line" data-delay="2000" data-speed="100">Carrying&nbsp;out&nbsp;site&nbsp;postprocessing&nbsp;&#8230;</div>
+          <div class="line" data-delay="1000" data-speed="100">Copying&nbsp;additional&nbsp;files&nbsp;(for&nbsp;distribution)&nbsp;&#8230;</div>
+          <div class="line" data-delay="1000" data-speed="100">Updating&nbsp;canonical&nbsp;URLs&nbsp;in&nbsp;document&nbsp;headers&nbsp;&#8230;</div><div class="line" data-delay="1000" data-speed="100">Running&nbsp;HTML&nbsp;Tidy&nbsp;on&nbsp;html&nbsp;files&nbsp;&#8230;</div>
+          <div class="line" data-delay="1000" data-speed="100">Created&nbsp;a&nbsp;sitemap&nbsp;file&nbsp;&#8230;</div>
+          <div class="line" data-delay="1500" data-speed="100">Creating&nbsp;a&nbsp;ZIP&nbsp;archive&nbsp;&#8230;</div>
+          <div class="line" data-delay="500" data-speed="100">Updating&nbsp;internal&nbsp;anchors&nbsp;to&nbsp;conform&nbsp;with&nbsp;canonical&nbsp;URLs&nbsp;&nbsp;&#8230;</div><div class="line" data-delay="2500" data-speed="100">Deploying&nbsp;on&nbsp;Netlify&nbsp;&#8230;</div>
+          <div class="line" data-delay="1500" data-speed="100">&#8211;&nbsp;Hashing&nbsp;files&#8230;</div>
+          <div class="line" data-delay="500" data-speed="100"><span class="text-green">✔</span>&nbsp;Finished&nbsp;hashing</div>
+          <div class="line" data-delay="1500" data-speed="100">&#8211;&nbsp;CDN&nbsp;diffing&nbsp;files&#8230;</div>
+          <div class="line" data-delay="500" data-speed="100"><span class="text-green">✔</span>&nbsp;CDN&nbsp;requesting&nbsp;6&nbsp;files</div>
+          <div class="line" data-delay="2500" data-speed="100">&#8211;&nbsp;Uploading&nbsp;6&nbsp;files</div>
+          <div class="line" data-delay="500" data-speed="100"><span class="text-green">✔</span>&nbsp;Finished&nbsp;uploading&nbsp;6&nbsp;assets</div>
+          <div class="line" data-delay="3000" data-speed="100">&#8211;&nbsp;Waiting&nbsp;for&nbsp;deploy&nbsp;to&nbsp;go&nbsp;live&#8230;</div>
+          <div class="line" data-delay="500" data-speed="100"><span class="text-green">✔</span>&nbsp;Deploy&nbsp;is&nbsp;live!</div>
+          <div class="line" data-delay="100" data-speed="100">&#8230;</div>
+          <div class="line" data-delay="500" data-speed="100"><span class="text-green">Website URL:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://makestaticsite.sh</div>
+          <div class="line" data-delay="1000" data-speed="100">Completed&nbsp;in&nbsp;35&nbsp;seconds.</div>
+          <div class="line" data-delay="100000" data-speed="100">All&nbsp;done!</div>
+        </div>
+        <p class="has-text-align-center has-text-color has-link-color wp-elements-afc7e0888f55a8a254a403d6c3413150"
+        style="color:#4f455c">[ Simulation: a run (partial extract)
+        of/for makestaticsite.sh ]</p>
+        <div class="wp-block-buttons is-content-justification-center is-layout-flex wp-container-core-buttons-is-layout-a89b3969 wp-block-buttons-is-layout-flex">
+          <div class="wp-block-button">
+            <a class="wp-block-button__link wp-element-button"
+            href="getting-started/installing/index.html">Free
+            download</a>
+          </div>
+        </div>
+        <p class="has-text-align-center"><a href="developers/releases/index.html" data-type="page" data-id="1048">Current version 0.31.9</a></p>
+        <p class="has-text-align-center">See the <a href="getting-started/setup/examples/index.html" data-type="page" data-id="882">examples</a> to see how it is
+        used.</p>
+        <p>Hello! MakeStaticSite is a command-line tool for
+        generating and deploying refined <em>static</em> versions
+        of both existing websites — typically <em>dynamic</em>,
+        i.e. depend on server-side scripting and databases — and
+        sites archived by the <a href="in-depth/digital-preservation/wayback-machine/index.html"
+        data-type="page" data-id="1411">Wayback Machine</a>.</p>
+        <p>Such static (or <em>flat</em>) websites are coded in
+        plain HTML, CSS and JavaScript, along with supporting
+        assets such as multimedia files. The web output contains no
+        server-side scripting and no databases are involved, making
+        it considerably more secure and faster than the original
+        source. If you are currently using a content management
+        system (CMS) like WordPress for your website, especially
+        one that is information-oriented, then MakeStaticSite will
+        probably be able to flatten most, if not all, of it.</p>
+        <p>The main technical prerequisite is to have <a rel="noreferrer noopener" href="https://www.gnu.org/software/bash/" target="_blank">Bash</a> installed on your computer (see <a href="getting-started/requirements/index.html" data-type="page"
+        data-id="37">requirements</a> for more details). To use the
+        tool requires just a basic acquaintance with a terminal and
+        command line, as illustrated in the animation above, which
+        replicates many of the lines echoed during the generation
+        of this site. If you are unfamiliar with this environment,
+        then you may like to consult a <a rel="noreferrer noopener"
+        href="https://www.youtube.com/watch?v=DJZgBggZv_k" target="_blank">basic introduction (for Macs)</a>. Once you have
+        set up your project, you only have to run one command —
+        <tt>makestaticsite.sh</tt>, the same one as this site’s
+        domain name!</p>
+        <p>The code comprises a series of <a rel="noreferrer noopener" href="https://www.gnu.org/software/bash/" target="_blank">Bash</a> shell scripts (<a rel="noreferrer noopener" href="https://ryanstutorials.net/bash-scripting-tutorial/bash-script.php"
+        target="_blank">simply explained in another tutorial</a>),
+        with the functionality built around <a rel="noreferrer noopener" href="https://www.gnu.org/software/wget/" target="_blank">Wget</a>. The scripts are made available under the
+        terms of the <a rel="noreferrer noopener" href="https://www.gnu.org/licenses/agpl-3.0.en.html" target="_blank">GNU AGPL license</a>, which means that you are
+        free to <a href="getting-started/installing/index.html"
+        data-type="page" data-id="12">download</a>, use, modify and
+        redistribute. Please note that whilst we hope that it’s
+        useful, the software is considered a <a href="developers/current-status/index.html" data-type="page"
+        data-id="242">prototype</a>, provided as-is, with no
+        guarantees and no formal offer of support.</p>
+        <p>Interested to know more? To find out what the software
+        is capable of, please <a href="about/index.html" data-type="page" data-id="10">continue to explore its
+        features</a>.</p>
+      </div>
+      <div class="wp-block-group is-layout-constrained wp-block-group-is-layout-constrained">
+      </div>
+    </main>
+    <footer class="wp-block-template-part">
+      <div class="wp-block-group is-layout-constrained wp-block-group-is-layout-constrained"
+      style="padding-top:var(--wp--custom--spacing--large, 8rem)">
+        <div class="wp-block-group alignfull is-layout-constrained wp-block-group-is-layout-constrained">
+          <div class="wp-block-group alignwide is-content-justification-space-between is-layout-flex wp-container-core-group-is-layout-37312ec6 wp-block-group-is-layout-flex"
+          style="padding-top:4rem;padding-bottom:4rem">
+            <p class="has-text-align-right">Copyright (c) 2022-2025
+            Paul Trafford</p>
+            <p class="has-text-align-right"><a href="privacy-policy/index.html" data-type="page" data-id="3">Privacy Policy</a></p>
+            <p class="has-text-align-right"><a href="contact/index.html" data-type="page" data-id="128">Contact</a></p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <header class="page-notes">
+      <p class="post-modified-info">This page was published on 30
+      October 2022 and last updated on 7 July 2025.</p>
+    </header>
+    <footer class="page-notes"></footer>
+  </div>
+  <script type="speculationrules">
+  {"prefetch":[{"source":"document","where":{"and":[{"href_matches":"\/*"},{"not":{"href_matches":["\/wp-*.php","\/wp-admin\/*","\/wp-content\/uploads\/*","\/wp-content\/*","\/wp-content\/plugins\/*","\/wp-content\/themes\/makestaticsite\/*","\/wp-content\/themes\/twentytwentytwo\/*","\/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+  </script> 
+  <script src="wp-content/plugins/simterm/js/show-your-terms.js"
+  id="simterm-showyourterms-js"></script> 
+  <script src="wp-content/plugins/simterm/js/simterm.js" id="simterm-launcher-js"></script> 
+  <script id="wp-block-template-skip-link-js-after">
+
+        ( function() {
+                var skipLinkTarget = document.querySelector( 'main' ),
+                        sibling,
+                        skipLinkTargetID,
+                        skipLink;
+
+                // Early exit if a skip-link target can't be located.
+                if ( ! skipLinkTarget ) {
+                        return;
+                }
+
+                /*
+                 * Get the site wrapper.
+                 * The skip-link will be injected in the beginning of it.
+                 */
+                sibling = document.querySelector( '.wp-site-blocks' );
+
+                // Early exit if the root element was not found.
+                if ( ! sibling ) {
+                        return;
+                }
+
+                // Get the skip-link target's ID, and generate one if it doesn't exist.
+                skipLinkTargetID = skipLinkTarget.id;
+                if ( ! skipLinkTargetID ) {
+                        skipLinkTargetID = 'wp--skip-link--target';
+                        skipLinkTarget.id = skipLinkTargetID;
+                }
+
+                // Create the skip link.
+                skipLink = document.createElement( 'a' );
+                skipLink.classList.add( 'skip-link', 'screen-reader-text' );
+                skipLink.id = 'wp-skip-link';
+                skipLink.href = '#' + skipLinkTargetID;
+                skipLink.innerText = 'Skip to content';
+
+                // Inject the skip link.
+                sibling.parentElement.insertBefore( skipLink, sibling );
+        }() );
+        
+  </script>
+</body>
+</html>
